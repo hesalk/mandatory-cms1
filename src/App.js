@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import home from './home-cards'
+
+
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {entries:[]}
 }
   componentDidMount(){
     let data = {
@@ -17,7 +20,7 @@ class App extends Component {
       Date:"2019-02-04",
       Body:"asdffaasdasdsoo"
     }
-    fetch('https://hesh.devspace.host/api/collections/save/Articels', {
+/*     fetch('https://hesh.devspace.host/api/collections/save/Articels', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -25,29 +28,15 @@ class App extends Component {
       })
   })
   .then(res=>res.json())
-  .then(entry => console.log(entry));
-    fetch('https://hesh.devspace.host/api/collections/get/Articels')
-    .then(res => res.json())
-    .then(res => console.log(res));
+  .then(entry => console.log(entry)); */
   }
   render(){
     return(
       <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+        <Router>
+        <Route path="/" exact component={home} />
+        </Router>
+      </div>
     )
   }
 }
