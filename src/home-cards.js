@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link } from "react-router-dom";
 import MDReactComponent from 'markdown-react-js';
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
@@ -8,12 +7,16 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Pagination from 'rc-pagination';
 import 'rc-pagination/assets/index.css';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+
+const queryString = require('query-string');
 
 class home extends Component {
     constructor(props) {
         super(props);
-        this.state = {entries:[],current: 1,total:0}
-        this.getitems = this.getitems.bind(this)
+        this.state = {entries:[],current: 1,total:0,hash:1}
+        this.getitems = this.getitems.bind(this);
     }
     getitems(l,s){
         fetch('https://hesh.devspace.host/api/collections/get/Articels', {
@@ -39,7 +42,13 @@ class home extends Component {
     }
     componentDidMount(){
         this.getitems(3,0)
+        console.log(this.props.location)
+        let skip = this.props
+        console.log(skip)
+        let p = queryString.parse(this.props.location.search);
+        console.log(p.page)
     }
+
     onChange = (page) => {
         console.log(page);
         this.setState({
@@ -48,42 +57,36 @@ class home extends Component {
         let range = (page-1)*3
         console.log(range)
         this.getitems(3,range)
-        console.log(this.props.match.params)
-
+        this.props.location.search = "?page=3"
+        console.log(this.props)
       }
+      
     render(){
+        
         return(
             <div className="cards-container">
                 <Container>
   <Row>
-    <Col>1 of 3</Col>
-    <Col>2 of 3</Col>
-    <Col>3 of 3</Col>
+            {this.state.entries.map((x,i)=>
+                            <Col>
+                                <Card style={{ width: '18rem' }}>
+                                <Card.Img variant="top" src="" />
+                                <Card.Body>
+                                  <Card.Title>{x.Title}</Card.Title>
+                                  <Card.Text>
+                                     <MDReactComponent text={x.Body} />
+                                     <footer className="blockquote-footer">
+                                     Auther <cite title="Source Title">{x.Auther[0].display}</cite>
+                                        </footer>
+                                  </Card.Text>
+                                  <Link to={"/home/"+x._id}><Button variant="primary">Go somewhere</Button></Link>
+                                </Card.Body>
+                              </Card>
+                            </Col>
+            )}
   </Row>
 </Container>
-                <Card style={{ width: '18rem' }}>
-  <Card.Img variant="top" src="" />
-  <Card.Body>
-    <Card.Title>Card Title</Card.Title>
-    <Card.Text>
-      Some quick example text to build on the card title and make up the bulk of
-      the card's content.
-    </Card.Text>
-    <Button variant="primary">Go somewhere</Button>
-  </Card.Body>
-</Card>
-                <ul>
-                {this.state.entries.map((x,i) => 
-                <>
-                <ol>
-                <p>{i}</p>
-                <p>{x.Title}</p>
-                <MDReactComponent text={x.Body} />
-                </ol>
-                </>
-                )}
-                </ul>
-                <Pagination onChange={this.onChange} current={this.state.current} total={this.state.total} defaultPageSize={3} />;
+                <Pagination onChange={this.onChange} current={this.state.current} total={this.state.total} defaultPageSize={3} />
             </div>
         )
     }
