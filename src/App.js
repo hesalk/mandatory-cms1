@@ -45,16 +45,17 @@ class App extends Component {
                     <Navbar bg="dark" variant="dark">
                         <Navbar.Brand href="#home">Navbar</Navbar.Brand>
                         <Nav className="mr-auto">
-                            <Nav.Link><Link to={"/home"}>Home</Link></Nav.Link>
+                            <Nav.Link><Link to={"/home/page/1"}>Home</Link></Nav.Link>
                             
                                 <Nav.Link><Link to={"/authoers"}>Authoers</Link></Nav.Link>
+                                
                             
                         </Nav>
                     </Navbar>
-                    <Route path="/home/" exact component={home}/>
+                    <Route path="/home/page/:page" exact component={home}/>
                     <Route path="/home/:id" exact component={articelpage}/>
                     <Route path="/authoers" exact component={autherlist}/>
-                </Router>
+                  </Router>
             </div>
         )
     }

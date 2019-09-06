@@ -8,14 +8,14 @@ import Col from 'react-bootstrap/Col'
 import Pagination from 'rc-pagination';
 import 'rc-pagination/assets/index.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
+import test from './getfunc'
 
 const queryString = require('query-string');
 
 class home extends Component {
     constructor(props) {
         super(props);
-        this.state = {entries:[],current: 1,total:0,hash:1}
+        this.state = {entries:[],current: this.props.match.params.page || 1,total:0,hash:1}
         this.getitems = this.getitems.bind(this);
     }
     getitems(l,s){
@@ -41,7 +41,8 @@ class home extends Component {
           );
     }
     componentDidMount(){
-        this.getitems(3,0)
+        test(2,2)
+        this.getitems(3,3 * (this.props.match.params.page - 1));
         console.log(this.props.location)
         let skip = this.props
         console.log(skip)
@@ -49,8 +50,14 @@ class home extends Component {
         console.log(p.page)
     }
 
+    componentDidUpdate(prevProps, nextState) {
+        if (prevProps.match.params.page !== this.props.match.params.page) {
+            this.getitems(3, 3 * (this.props.match.params.page - 1));
+        }
+    }
+
     onChange = (page) => {
-        console.log(page);
+        this.props.history.push("/home/page/" + page);
         this.setState({
           current: page,
         });
@@ -62,6 +69,7 @@ class home extends Component {
       }
       
     render(){
+        console.log("page", this.props.match.params.page, this.state.current);
         
         return(
             <div className="cards-container">
@@ -80,14 +88,14 @@ class home extends Component {
                                       <Card.Footer className="text-muted">{x.Date}</Card.Footer>
                                         </footer>
                                   </Card.Text>
-                                  <Link to={"/home/"+x._id}><Button variant="primary">Go somewhere</Button></Link>
+                                  <Link to={"/home/"+x._id}><Button variant="primary">Read the articel</Button></Link>
                                 </Card.Body>
                               </Card>
                             </Col>
             )}
   </Row>
 </Container>
-                <Pagination onChange={this.onChange} current={this.state.current} total={this.state.total} defaultPageSize={3} />
+                <Pagination onChange={this.onChange} current={parseInt(this.props.match.params.page)} total={this.state.total} defaultPageSize={3} />
             </div>
         )
     }
