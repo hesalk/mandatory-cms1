@@ -76,7 +76,8 @@ class home extends Component {
                                   <Card.Text>
                                      <MDReactComponent text={x.Body} />
                                      <footer className="blockquote-footer">
-                                     Auther <cite title="Source Title">{x.Auther[0].display}</cite>
+                                      <cite title="Source Title">{x.Auther[0].display}</cite>
+                                      <Card.Footer className="text-muted">{x.Date}</Card.Footer>
                                         </footer>
                                   </Card.Text>
                                   <Link to={"/home/"+x._id}><Button variant="primary">Go somewhere</Button></Link>
