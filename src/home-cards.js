@@ -82,7 +82,7 @@ class home extends Component {
                                 <Card.Body>
                                   <Card.Title>{x.Title}</Card.Title>
                                   <Card.Text>
-                                     <MDReactComponent text={x.Body} />
+                                     
                                      <footer className="blockquote-footer">
                                       <cite title="Source Title">{x.Auther[0].display}</cite>
                                       <Card.Footer className="text-muted">{x.Date}</Card.Footer>
